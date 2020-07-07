@@ -15,6 +15,9 @@ public class Message {
 	@JsonProperty
 	private Long billId;
 	
+	@JsonProperty
+	private WorkerJobType jobType;
+	
 	public Message() {}
 	
 	@JsonGetter
@@ -45,5 +48,15 @@ public class Message {
 	@JsonSetter
 	public void setBillId(Long billId) {
 		this.billId = billId;
-	}		
+	}
+
+	@JsonGetter
+	public WorkerJobType getJobType() {
+		return jobType;
+	}
+
+	@JsonSetter
+	public void setJobType(WorkerJobType jobType) {
+		this.jobType = jobType;
+	}
 }

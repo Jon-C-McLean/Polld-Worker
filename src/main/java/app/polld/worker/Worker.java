@@ -12,6 +12,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import app.polld.worker.models.WorkerJobType;
+
 public class Worker {
 	
 	private static final String queueUrl = "https://sqs.ap-southeast-2.amazonaws.com/271175096939/Polld-Parse-Dispatch";
@@ -30,6 +32,20 @@ public class Worker {
 			ObjectMapper mapper = new ObjectMapper();
 			
 			app.polld.worker.models.Message msg = mapper.readValue(m.getBody(), app.polld.worker.models.Message.class);
+			
+			WorkerJobType jobType = msg.getJobType();
+			
+			switch(jobType) {
+			case SENATOR_PARSE:
+				// DO SENATOR PARSE
+				break;
+			case BILL_PARSE:
+				// DO BILL PARSE
+				break;
+			default:
+				// OTHER
+				break;
+			}
 			
 			sqs.deleteMessage(queueUrl, m.getReceiptHandle());
 		}
