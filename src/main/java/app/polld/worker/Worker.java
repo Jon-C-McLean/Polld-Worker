@@ -15,11 +15,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Worker {
 	
 	private static final String queueUrl = "https://sqs.ap-southeast-2.amazonaws.com/271175096939/Polld-Parse-Dispatch";
+	private static final String apiUrl = System.getProperty("API_URL");
 	
 	private static DocumentProcessor processor = new DocumentProcessor();
 	
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException, ParseException {
-		List<Message> messages = getSQS().receiveMessage(queueUrl).getMessages();
+		AmazonSQS sqs = getSQS();
+		
+		List<Message> messages = sqs.receiveMessage(queueUrl).getMessages();
 		
 		for(Message m : messages) {
 			System.out.println("Body: " + m.getBody());
@@ -28,7 +31,7 @@ public class Worker {
 			
 			app.polld.worker.models.Message msg = mapper.readValue(m.getBody(), app.polld.worker.models.Message.class);
 			
-			System.out.println(mapper.writeValueAsString(processor.processParliamentBill(msg)));
+			sqs.deleteMessage(queueUrl, m.getReceiptHandle());
 		}
 	}
 	
