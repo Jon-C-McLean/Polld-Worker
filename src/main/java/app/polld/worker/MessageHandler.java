@@ -13,20 +13,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import app.polld.worker.models.Message;
 import app.polld.worker.models.WorkerJobType;
+import app.polld.worker.processors.BillDocumentProcessor;
 
 public class MessageHandler {
 	
 	private AmazonSQS sqs;
 	private String queueUrl;
 	private String apiUrl;
-	private DocumentProcessor processor;
 	private ObjectMapper mapper;
 	
-	public MessageHandler(AmazonSQS sqs, String queueUrl, String apiUrl, DocumentProcessor processor) {
+	public MessageHandler(AmazonSQS sqs, String queueUrl, String apiUrl) {
 		this.sqs = sqs;
 		this.queueUrl = queueUrl;
 		this.apiUrl = apiUrl;
-		this.processor = processor;
 		this.mapper = new ObjectMapper();
 	}
 	
@@ -63,7 +62,7 @@ public class MessageHandler {
 		
 		switch(jobType) {
 		case BILL_PARSE:
-			processor.processParliamentBill(message);
+			new BillDocumentProcessor().process(message);
 			break;
 		case SENATOR_PARSE:
 			// Parse Senator Page
