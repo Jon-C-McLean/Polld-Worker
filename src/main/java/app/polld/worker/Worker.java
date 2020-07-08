@@ -34,13 +34,11 @@ public class Worker {
 				if(handler.hasMessagesInQueue()) {
 					handleMessage();
 				}else {
-					System.out.println("No message");
 					checkTime = true;
 					nextCheck = System.currentTimeMillis() + 60000; // 1 min from now
 				}
 			}else {
 				if(nextCheck <= System.currentTimeMillis()) {
-					System.out.println("Check time");
 					if(!handler.hasMessagesInQueue()) {
 						if(emptyCounter == 25) {
 							continueLooping = false;
