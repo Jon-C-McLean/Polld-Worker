@@ -1,7 +1,6 @@
-package app.polld.worker;
+package app.polld.worker.processors;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -14,11 +13,10 @@ import app.polld.worker.models.BillDetail;
 import app.polld.worker.models.BillProgress;
 import app.polld.worker.models.Message;
 
-public class DocumentProcessor {
-	
-	public DocumentProcessor() {}
-	
-	public BillDetail processParliamentBill(Message m) throws IOException, ParseException {
+public class BillDocumentProcessor extends DocumentProcessor<BillDetail> {
+
+	@Override
+	public BillDetail process(Message m) throws IOException, ParseException {
 		Document doc = Jsoup.connect(m.getUrl()).get();
 		
 		BillDetail detail = new BillDetail();
@@ -76,5 +74,7 @@ public class DocumentProcessor {
 		
 		return detail;
 	}
+
+	
 	
 }

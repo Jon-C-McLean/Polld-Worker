@@ -17,8 +17,7 @@ public class Worker {
 	private static final String queueUrl = "https://sqs.ap-southeast-2.amazonaws.com/271175096939/Polld-Parse-Dispatch";
 	private static final String apiUrl = System.getProperty("API_URL");
 	
-	private static DocumentProcessor processor = new DocumentProcessor();
-	private static MessageHandler handler = new MessageHandler(getSQS(), queueUrl, apiUrl, processor);
+	private static MessageHandler handler = new MessageHandler(getSQS(), queueUrl, apiUrl);
 	
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException, ParseException {
 		boolean continueLooping = true;
